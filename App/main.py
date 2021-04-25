@@ -1,4 +1,4 @@
-
+import os
 import json
 from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, redirect, flash, url_for
@@ -32,12 +32,13 @@ login_manager.REMEMBER_COOKIE_REFRESH_EACH_REQUEST= True
 
 ''' Begin boilerplate code '''
 
+print("DB URL: " + str(os.environ.get("DATABASE_URL") ) )
 
 def create_app():
   app = Flask(__name__, static_url_path='')
-  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-  app.config['SECRET_KEY'] = "MYSECRET"
+  app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+  
   CORS(app)
   db.init_app(app)
   login_manager.init_app(app)
